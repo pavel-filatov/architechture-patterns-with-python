@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Idea
+.idea/
+*.iml
+
+# Development environment
+dev-env/
