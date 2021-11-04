@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional, Set, List, Any
+from typing import Any, List, Optional, Set
 
 
 @dataclass(frozen=True)
@@ -28,7 +28,7 @@ class Batch:
 
     @property
     def allocated_quantity(self):
-        return sum(l.qty for l in self._allocated_lines)
+        return sum(line.qty for line in self._allocated_lines)
 
     @property
     def available_quantity(self) -> int:

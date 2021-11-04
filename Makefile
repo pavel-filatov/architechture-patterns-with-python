@@ -23,7 +23,8 @@ $(DEV_ENV):
 	@conda create -y -p $(DEV_ENV) python==$(PYTHON_VERSION) && \
 	source activate $(DEV_ENV) && \
 	pip install -r requirements.txt && \
-	pip install -r requirements-dev.txt
+	pip install -r requirements-dev.txt && \
+	pre-commit install
 
 .PHONY: delete-env
 delete-env: ## Delete development environment
