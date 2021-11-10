@@ -44,6 +44,14 @@ class Batch:
             return True
         return self.eta > other.eta
 
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Batch):
+            return self.reference == other.reference
+        return False
+
+    def __hash__(self):
+        return hash(self.reference)
+
 
 def allocate(line: OrderLine, batches: List[Batch]) -> Optional[str]:
     for batch in sorted(batches):
