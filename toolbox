@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+set -e
+
+FILE=$0
+DEV_ENV=./dev-env
+
+## Architecture patterns with Python: Help
+
+function help { ## Print this help
+  TAB=$(printf \\t)
+  grep -E '^(##|function.+##)' "$FILE" | sed -E "s/^function ([a-z_]+).*##/    \1$TAB/" | sed -e 's/## *//'
+}
+
+##
+## > Development environment
+function create_env() {
+  python3 -m virtualenv $DEV_ENV &&
+    $DEV_ENV/bin/pip install -r requirements.txt &&
+    $DEV_ENV/bin/pip install -r requirements-dev.txt &&
+    $DEV_ENV/bin/pre-commit install
+}
+
+function delete_env() {
+  rm -rf $DEV_ENV
+}
+
+function virtualenv_cli() {
+  function virtualenv_cli_help() {
+    echo "Usage: $FILE virtualenv <command>."
+    echo 'Commands:'
+    echo '  create:   Create virtual environment'
+    echo '  delete:   Delete virtual environment'
+    echo '  recreate: Delete virtual environment and recreate it again from scratch'
+    echo '  help:     Show this help'
+  }
+
+  case $1 in
+  create) create_env ;;
+  delete) delete_env ;;
+  recreate)
+    delete_env
+    create_env
+    ;;
+  help | '') virtualenv_cli_help ;;
+  *)
+    virtualenv_cli_help
+    echo "Unknown command: $1"
+    exit 1
+    ;;
+  esac
+}
+
+function cli() {
+  function cli_help() {
+    echo "Architecture patterns with Python: Help"
+    echo "Usage: $FILE <command>"
+    echo "Commands:"
+    echo "  virtualenv: Create virtual environment for development"
+    echo "  help:       Show this help"
+  }
+
+  case $1 in
+  virtualenv) virtualenv_cli "${@:2}" ;;
+  help | '') cli_help ;;
+  *)
+    cli_help
+    echo "ERROR: Unknown command: $1"
+    exit 1
+    ;;
+  esac
+}
+
+cli "$@"
