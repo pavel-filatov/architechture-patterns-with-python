@@ -1,12 +1,11 @@
 exclude: "tests"
-default_language_version:
-  python: python3.10
 repos:
   - repo: https://github.com/psf/black
     rev: 19.10b0
     hooks:
       - id: black
-        args: ["-l 120"]
+        args: ["-l 88"]
+        additional_dependencies: ["click==8.0.4"]
 
   - repo: https://github.com/asottile/seed-isort-config
     rev: v2.2.0
